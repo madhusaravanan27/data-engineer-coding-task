@@ -1,236 +1,36 @@
-Marketing Data Warehouse Pipeline
-Overview
+# Marketing Data Warehouse Pipeline
 
-This project builds a marketing analytics warehouse using:
+## Overview
 
-Python (Ingestion + Data Quality)
+This project implements an end-to-end marketing data pipeline using:
 
-PostgreSQL (Staging Layer)
+- Python (ingestion + data quality)
+- Postgres (data warehouse)
+- dbt (transformations)
+- Airflow (orchestration)
+- Docker (reproducibility)
 
-dbt (Transformations)
+The pipeline ingests Google Ads, Facebook Ads, and CRM Revenue data, applies rule-based data validation, loads staging tables, and builds a dimensional model for analytics.
 
-Airflow (Orchestration)
+---
 
-Docker (Infrastructure)
+## Architecture
 
-Setup & Execution Steps
-1. Start Infrastructure
-docker compose up --build
+Source Files / API  
+↓  
+Python Ingestion (Extract → Validate → Transform → Upsert)  
+↓  
+Postgres Staging Tables  
+↓  
+dbt Transformations  
+↓  
+Fact & Dimension Tables  
+↓  
+Airflow DAG Orchestration  
 
+---
 
-Services:
+## Ingestion Layer (Python)
 
-PostgreSQL
+Each source has a dedicated script:
 
-Airflow (Webserver + Scheduler)
-
-dbt
-
-Adminer
-
-Airflow UI:
-
-http://localhost:8081
-
-
-Adminer:
-
-http://localhost:8080
-
-2. Ingestion Layer (Python)
-
-Three ingestion scripts:
-
-load_google.py
-
-load_facebook.py
-
-load_crm.py
-
-Each script performs:
-
-Data extraction
-
-Rule-based data quality checks
-
-Outlier handling (IQR for revenue)
-
-Idempotent UPSERT into staging tables
-
-3. Staging Tables (PostgreSQL)
-stg_google_ads
-
-campaign_id
-
-campaign_name
-
-campaign_type
-
-date
-
-impressions
-
-clicks
-
-cost
-
-conversions
-
-conversion_value
-
-source_system
-
-ingested_at
-
-Unique Constraint:
-
-(campaign_id, date)
-
-stg_facebook_ads
-
-campaign_id
-
-campaign_name
-
-date
-
-impressions
-
-clicks
-
-spend
-
-purchases
-
-purchase_value
-
-reach
-
-frequency
-
-source_system
-
-ingested_at
-
-Unique Constraint:
-
-(campaign_id, date)
-
-stg_crm_revenue
-
-order_id
-
-customer_id
-
-date
-
-revenue
-
-channel_attributed
-
-campaign_source
-
-product_category
-
-region
-
-ingested_at
-
-Unique Constraint:
-
-(order_id)
-
-
-All loads use:
-
-ON CONFLICT (...) DO UPDATE
-
-
-This makes the pipeline idempotent.
-
-4. dbt Transformations
-
-Run:
-
-dbt run
-dbt test
-
-Warehouse Models
-Dimension Tables
-dim_campaign
-
-campaign_id
-
-campaign_name
-
-channel
-
-campaign_type
-
-Fact Tables
-fct_campaign_performance
-
-activity_date
-
-campaign_id
-
-channel
-
-impressions
-
-clicks
-
-spend
-
-conversions
-
-revenue
-
-Joins:
-
-Google Ads
-
-Facebook Ads
-
-CRM Revenue
-
-Airflow DAG
-
-DAG Name:
-
-marketing_warehouse_pipeline
-
-
-Pipeline Order:
-
-ingest_google
-
-ingest_facebook
-
-ingest_crm
-
-dbt_run
-
-dbt_test
-
-Features:
-
-Retry logic
-
-Dependency handling
-
-Safe re-runs (idempotent)
-
-Data Quality Rules
-
-Applied during ingestion:
-
-Required field validation
-
-Channel validation (google / facebook)
-
-Non-negative revenue
-
-IQR-based revenue outlier detection
-
-Duplicate handling via unique constraints
