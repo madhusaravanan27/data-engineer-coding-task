@@ -1,0 +1,10 @@
+version: 2
+
+sources:
+  - name: staging_input
+    database: local
+    schema: public
+    tables:
+      - name: stg_google_ads
+      - name: stg_facebook_ads
+      - name: stg_crm_revenue

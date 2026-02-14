@@ -1,0 +1,12 @@
+version: 2
+
+models:
+  - name: dim_campaign
+    columns:
+      - name: campaign_id
+        tests:
+          - not_null
+
+      - name: channel
+        tests:
+          - not_null

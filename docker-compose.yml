@@ -1,6 +1,10 @@
+
+
 services:
+
   postgres:
     image: postgres:16.4
+    container_name: marketing_postgres
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: password
@@ -9,9 +13,74 @@ services:
       - "5432:5432"
     volumes:
       - ./postgres-volume/storage/postgres:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
   adminer:
     image: adminer
+    container_name: marketing_adminer
     environment:
       ADMINER_DEFAULT_SERVER: postgres
     ports:
       - "8080:8080"
+    depends_on:
+      - postgres
+
+  jupyter:
+    image: ist769/jupyter_pyspark:20210924b
+    container_name: marketing_jupyter
+    hostname: jupyter
+    environment:
+      GRANT_SUDO: "yes"
+      JUPYTER_ENABLE_LAB: "yes"
+      JUPYTER_TOKEN: SU2orange!
+    ports:
+      - "8888:8888"
+    volumes:
+      - ./work:/home/jovyan/work
+      - ./datasets:/home/jovyan/datasets
+    env_file:
+      - ./hadoop-hive.env
+
+  airflow-webserver:
+    build:
+      context: .
+      dockerfile: Dockerfile.airflow
+    container_name: marketing_airflow_webserver
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      AIRFLOW__CORE__EXECUTOR: LocalExecutor
+      AIRFLOW__CORE__LOAD_EXAMPLES: "false"
+      AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://postgres:password@postgres:5432/local
+    volumes:
+      - ./airflow/dags:/opt/airflow/dags
+      - ./dbt:/opt/airflow/dbt
+      - ./logs:/opt/airflow/logs
+      - ./ingestion:/opt/airflow/ingestion
+    ports:
+      - "8081:8080"
+    command: webserver
+
+  airflow-scheduler:
+    build:
+      context: .
+      dockerfile: Dockerfile.airflow
+    container_name: marketing_airflow_scheduler
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      AIRFLOW__CORE__EXECUTOR: LocalExecutor
+      AIRFLOW__CORE__LOAD_EXAMPLES: "false"
+      AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://postgres:password@postgres:5432/local
+    volumes:
+      - ./airflow/dags:/opt/airflow/dags
+      - ./dbt:/opt/airflow/dbt
+      - ./logs:/opt/airflow/logs
+      - ./ingestion:/opt/airflow/ingestion
+    command: scheduler

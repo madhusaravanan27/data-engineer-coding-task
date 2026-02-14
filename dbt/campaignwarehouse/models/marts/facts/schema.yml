@@ -1,0 +1,26 @@
+version: 2
+
+models:
+  - name: fct_campaign_performance
+    columns:
+      - name: activity_date
+        tests:
+          - not_null
+
+      - name: channel
+        tests:
+          - not_null
+          - accepted_values:
+              values: ["google", "facebook"]
+
+      - name: campaign_id
+        tests:
+          - not_null
+
+      - name: spend
+        tests:
+          - not_null
+
+      - name: conversions
+        tests:
+          - not_null

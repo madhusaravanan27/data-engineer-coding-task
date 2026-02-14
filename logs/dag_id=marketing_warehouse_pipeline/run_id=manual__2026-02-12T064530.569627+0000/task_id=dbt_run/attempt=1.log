@@ -1,0 +1,52 @@
+[2026-02-12T06:45:38.626+0000] {local_task_job_runner.py:120} INFO - ::group::Pre task execution logs
+[2026-02-12T06:45:38.768+0000] {taskinstance.py:2076} INFO - Dependencies all met for dep_context=non-requeueable deps ti=<TaskInstance: marketing_warehouse_pipeline.dbt_run manual__2026-02-12T06:45:30.569627+00:00 [queued]>
+[2026-02-12T06:45:38.780+0000] {taskinstance.py:2076} INFO - Dependencies all met for dep_context=requeueable deps ti=<TaskInstance: marketing_warehouse_pipeline.dbt_run manual__2026-02-12T06:45:30.569627+00:00 [queued]>
+[2026-02-12T06:45:38.781+0000] {taskinstance.py:2306} INFO - Starting attempt 1 of 3
+[2026-02-12T06:45:38.804+0000] {taskinstance.py:2330} INFO - Executing <Task(BashOperator): dbt_run> on 2026-02-12 06:45:30.569627+00:00
+[2026-02-12T06:45:38.811+0000] {standard_task_runner.py:90} INFO - Running: ['airflow', 'tasks', 'run', 'marketing_warehouse_pipeline', 'dbt_run', 'manual__2026-02-12T06:45:30.569627+00:00', '--job-id', '81', '--raw', '--subdir', 'DAGS_FOLDER/marketing_warehouse_pipeline.py', '--cfg-path', '/tmp/tmp6aod_2dz']
+[2026-02-12T06:45:38.814+0000] {logging_mixin.py:188} WARNING - /home/airflow/.local/lib/python3.12/site-packages/airflow/task/task_runner/standard_task_runner.py:61 DeprecationWarning: This process (pid=1314) is multi-threaded, use of fork() may lead to deadlocks in the child.
+[2026-02-12T06:45:38.814+0000] {standard_task_runner.py:91} INFO - Job 81: Subtask dbt_run
+[2026-02-12T06:45:38.815+0000] {standard_task_runner.py:63} INFO - Started process 1315 to run task
+[2026-02-12T06:45:39.182+0000] {task_command.py:426} INFO - Running <TaskInstance: marketing_warehouse_pipeline.dbt_run manual__2026-02-12T06:45:30.569627+00:00 [running]> on host 1fba4c36ee31
+[2026-02-12T06:45:39.792+0000] {taskinstance.py:2648} INFO - Exporting env vars: AIRFLOW_CTX_DAG_OWNER='data-engineering' AIRFLOW_CTX_DAG_ID='marketing_warehouse_pipeline' AIRFLOW_CTX_TASK_ID='dbt_run' AIRFLOW_CTX_EXECUTION_DATE='2026-02-12T06:45:30.569627+00:00' AIRFLOW_CTX_TRY_NUMBER='1' AIRFLOW_CTX_DAG_RUN_ID='manual__2026-02-12T06:45:30.569627+00:00'
+[2026-02-12T06:45:39.793+0000] {taskinstance.py:430} INFO - ::endgroup::
+[2026-02-12T06:45:39.813+0000] {subprocess.py:63} INFO - Tmp dir root location: /tmp
+[2026-02-12T06:45:39.815+0000] {subprocess.py:75} INFO - Running command: ['/usr/bin/bash', '-c', '\n    cd /opt/airflow/dbt/campaignwarehouse &&\n    dbt run --profiles-dir /opt/airflow/dbt\n    ']
+[2026-02-12T06:45:39.826+0000] {subprocess.py:86} INFO - Output:
+[2026-02-12T06:45:42.612+0000] {subprocess.py:93} INFO - [0m06:45:42  Running with dbt=1.11.3
+[2026-02-12T06:45:43.021+0000] {subprocess.py:93} INFO - [0m06:45:43  Registered adapter: postgres=1.10.0
+[2026-02-12T06:45:44.082+0000] {subprocess.py:93} INFO - [0m06:45:44  [[33mWARNING[0m]: Configuration paths exist in your dbt_project.yml file which do not apply to any resources.
+[2026-02-12T06:45:44.083+0000] {subprocess.py:93} INFO - There are 1 unused configuration paths:
+[2026-02-12T06:45:44.083+0000] {subprocess.py:93} INFO - - models.campaignwarehouse.example
+[2026-02-12T06:45:44.569+0000] {subprocess.py:93} INFO - [0m06:45:44  Found 8 models, 15 data tests, 3 sources, 464 macros
+[2026-02-12T06:45:44.576+0000] {subprocess.py:93} INFO - [0m06:45:44
+[2026-02-12T06:45:44.578+0000] {subprocess.py:93} INFO - [0m06:45:44  Concurrency: 4 threads (target='dev')
+[2026-02-12T06:45:44.580+0000] {subprocess.py:93} INFO - [0m06:45:44
+[2026-02-12T06:45:45.103+0000] {subprocess.py:93} INFO - [0m06:45:45  1 of 8 START sql view model public.int_ads_facebook ............................ [RUN]
+[2026-02-12T06:45:45.106+0000] {subprocess.py:93} INFO - [0m06:45:45  2 of 8 START sql view model public.int_ads_google .............................. [RUN]
+[2026-02-12T06:45:45.108+0000] {subprocess.py:93} INFO - [0m06:45:45  3 of 8 START sql view model public.int_crm_revenue ............................. [RUN]
+[2026-02-12T06:45:45.638+0000] {subprocess.py:93} INFO - [0m06:45:45  2 of 8 OK created sql view model public.int_ads_google ......................... [[32mCREATE VIEW[0m in 0.52s]
+[2026-02-12T06:45:45.647+0000] {subprocess.py:93} INFO - [0m06:45:45  1 of 8 OK created sql view model public.int_ads_facebook ....................... [[32mCREATE VIEW[0m in 0.53s]
+[2026-02-12T06:45:45.650+0000] {subprocess.py:93} INFO - [0m06:45:45  3 of 8 OK created sql view model public.int_crm_revenue ........................ [[32mCREATE VIEW[0m in 0.53s]
+[2026-02-12T06:45:45.661+0000] {subprocess.py:93} INFO - [0m06:45:45  4 of 8 START sql table model public.dim_campaign ............................... [RUN]
+[2026-02-12T06:45:45.663+0000] {subprocess.py:93} INFO - [0m06:45:45  5 of 8 START sql table model public.fct_campaign_performance ................... [RUN]
+[2026-02-12T06:45:45.665+0000] {subprocess.py:93} INFO - [0m06:45:45  6 of 8 START sql table model public.dim_channel ................................ [RUN]
+[2026-02-12T06:45:45.667+0000] {subprocess.py:93} INFO - [0m06:45:45  7 of 8 START sql table model public.dim_date ................................... [RUN]
+[2026-02-12T06:45:46.339+0000] {subprocess.py:93} INFO - [0m06:45:46  4 of 8 OK created sql table model public.dim_campaign .......................... [[32mSELECT 6[0m in 0.66s]
+[2026-02-12T06:45:46.361+0000] {subprocess.py:93} INFO - [0m06:45:46  6 of 8 OK created sql table model public.dim_channel ........................... [[32mSELECT 2[0m in 0.68s]
+[2026-02-12T06:45:46.366+0000] {subprocess.py:93} INFO - [0m06:45:46  5 of 8 OK created sql table model public.fct_campaign_performance .............. [[32mSELECT 84[0m in 0.68s]
+[2026-02-12T06:45:46.370+0000] {subprocess.py:93} INFO - [0m06:45:46  7 of 8 OK created sql table model public.dim_date .............................. [[32mSELECT 15[0m in 0.68s]
+[2026-02-12T06:45:46.375+0000] {subprocess.py:93} INFO - [0m06:45:46  8 of 8 START sql table model public.fct_revenue_attribution .................... [RUN]
+[2026-02-12T06:45:46.685+0000] {subprocess.py:93} INFO - [0m06:45:46  8 of 8 OK created sql table model public.fct_revenue_attribution ............... [[32mSELECT 53[0m in 0.30s]
+[2026-02-12T06:45:46.812+0000] {subprocess.py:93} INFO - [0m06:45:46
+[2026-02-12T06:45:46.814+0000] {subprocess.py:93} INFO - [0m06:45:46  Finished running 5 table models, 3 view models in 0 hours 0 minutes and 2.23 seconds (2.23s).
+[2026-02-12T06:45:46.928+0000] {subprocess.py:93} INFO - [0m06:45:46
+[2026-02-12T06:45:46.930+0000] {subprocess.py:93} INFO - [0m06:45:46  [32mCompleted successfully[0m
+[2026-02-12T06:45:46.931+0000] {subprocess.py:93} INFO - [0m06:45:46
+[2026-02-12T06:45:46.933+0000] {subprocess.py:93} INFO - [0m06:45:46  Done. PASS=8 WARN=0 ERROR=0 SKIP=0 NO-OP=0 TOTAL=8
+[2026-02-12T06:45:47.572+0000] {subprocess.py:97} INFO - Command exited with return code 0
+[2026-02-12T06:45:47.573+0000] {taskinstance.py:441} INFO - ::group::Post task execution logs
+[2026-02-12T06:45:47.771+0000] {taskinstance.py:1206} INFO - Marking task as SUCCESS. dag_id=marketing_warehouse_pipeline, task_id=dbt_run, run_id=manual__2026-02-12T06:45:30.569627+00:00, execution_date=20260212T064530, start_date=20260212T064538, end_date=20260212T064547
+[2026-02-12T06:45:47.832+0000] {local_task_job_runner.py:240} INFO - Task exited with return code 0
+[2026-02-12T06:45:47.945+0000] {taskinstance.py:3498} INFO - 0 downstream tasks scheduled from follow-on schedule check
+[2026-02-12T06:45:47.950+0000] {local_task_job_runner.py:222} INFO - ::endgroup::

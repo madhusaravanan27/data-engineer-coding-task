@@ -1,0 +1,38 @@
+[2026-02-11T19:12:04.539+0000] {local_task_job_runner.py:120} INFO - ::group::Pre task execution logs
+[2026-02-11T19:12:04.657+0000] {taskinstance.py:2076} INFO - Dependencies all met for dep_context=non-requeueable deps ti=<TaskInstance: marketing_warehouse_pipeline.ingest_data manual__2026-02-11T04:31:00.498502+00:00 [queued]>
+[2026-02-11T19:12:04.667+0000] {taskinstance.py:2076} INFO - Dependencies all met for dep_context=requeueable deps ti=<TaskInstance: marketing_warehouse_pipeline.ingest_data manual__2026-02-11T04:31:00.498502+00:00 [queued]>
+[2026-02-11T19:12:04.668+0000] {taskinstance.py:2306} INFO - Starting attempt 3 of 3
+[2026-02-11T19:12:04.689+0000] {taskinstance.py:2330} INFO - Executing <Task(BashOperator): ingest_data> on 2026-02-11 04:31:00.498502+00:00
+[2026-02-11T19:12:04.700+0000] {standard_task_runner.py:90} INFO - Running: ['airflow', 'tasks', 'run', 'marketing_warehouse_pipeline', 'ingest_data', 'manual__2026-02-11T04:31:00.498502+00:00', '--job-id', '9', '--raw', '--subdir', 'DAGS_FOLDER/marketing_warehouse_pipeline.py', '--cfg-path', '/tmp/tmp1f5oliht']
+[2026-02-11T19:12:04.702+0000] {standard_task_runner.py:91} INFO - Job 9: Subtask ingest_data
+[2026-02-11T19:12:04.705+0000] {logging_mixin.py:188} WARNING - /home/airflow/.local/lib/python3.12/site-packages/airflow/task/task_runner/standard_task_runner.py:61 DeprecationWarning: This process (pid=1139) is multi-threaded, use of fork() may lead to deadlocks in the child.
+[2026-02-11T19:12:04.706+0000] {standard_task_runner.py:63} INFO - Started process 1140 to run task
+[2026-02-11T19:12:05.026+0000] {task_command.py:426} INFO - Running <TaskInstance: marketing_warehouse_pipeline.ingest_data manual__2026-02-11T04:31:00.498502+00:00 [running]> on host 5c7efdc1cf0a
+[2026-02-11T19:12:05.473+0000] {taskinstance.py:2648} INFO - Exporting env vars: AIRFLOW_CTX_DAG_OWNER='data-engineering' AIRFLOW_CTX_DAG_ID='marketing_warehouse_pipeline' AIRFLOW_CTX_TASK_ID='ingest_data' AIRFLOW_CTX_EXECUTION_DATE='2026-02-11T04:31:00.498502+00:00' AIRFLOW_CTX_TRY_NUMBER='3' AIRFLOW_CTX_DAG_RUN_ID='manual__2026-02-11T04:31:00.498502+00:00'
+[2026-02-11T19:12:05.475+0000] {taskinstance.py:430} INFO - ::endgroup::
+[2026-02-11T19:12:05.492+0000] {subprocess.py:63} INFO - Tmp dir root location: /tmp
+[2026-02-11T19:12:05.493+0000] {subprocess.py:75} INFO - Running command: ['/usr/bin/bash', '-c', '\n        echo "Running ingestion scripts"\n        python /opt/airflow/ingestion/load_facebook.py &&\n        python /opt/airflow/ingestion/load_google.py &&\n        python /opt/airflow/ingestion/load_crm.py\n        ']
+[2026-02-11T19:12:05.504+0000] {subprocess.py:86} INFO - Output:
+[2026-02-11T19:12:05.506+0000] {subprocess.py:93} INFO - Running ingestion scripts
+[2026-02-11T19:12:05.569+0000] {subprocess.py:93} INFO - python: can't open file '/opt/airflow/ingestion/load_facebook.py': [Errno 2] No such file or directory
+[2026-02-11T19:12:05.572+0000] {subprocess.py:97} INFO - Command exited with return code 2
+[2026-02-11T19:12:05.573+0000] {taskinstance.py:441} INFO - ::group::Post task execution logs
+[2026-02-11T19:12:05.666+0000] {taskinstance.py:2905} ERROR - Task failed with exception
+Traceback (most recent call last):
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/taskinstance.py", line 465, in _execute_task
+    result = _execute_callable(context=context, **execute_callable_kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/taskinstance.py", line 432, in _execute_callable
+    return execute_callable(context=context, **execute_callable_kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/baseoperator.py", line 400, in wrapper
+    return func(self, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/operators/bash.py", line 243, in execute
+    raise AirflowException(
+airflow.exceptions.AirflowException: Bash command failed. The command returned a non-zero exit code 2.
+[2026-02-11T19:12:05.670+0000] {taskinstance.py:1206} INFO - Marking task as FAILED. dag_id=marketing_warehouse_pipeline, task_id=ingest_data, run_id=manual__2026-02-11T04:31:00.498502+00:00, execution_date=20260211T043100, start_date=20260211T191204, end_date=20260211T191205
+[2026-02-11T19:12:05.692+0000] {standard_task_runner.py:110} ERROR - Failed to execute job 9 for task ingest_data (Bash command failed. The command returned a non-zero exit code 2.; 1140)
+[2026-02-11T19:12:05.724+0000] {local_task_job_runner.py:240} INFO - Task exited with return code 1
+[2026-02-11T19:12:05.857+0000] {taskinstance.py:3498} INFO - 0 downstream tasks scheduled from follow-on schedule check
+[2026-02-11T19:12:05.865+0000] {local_task_job_runner.py:222} INFO - ::endgroup::

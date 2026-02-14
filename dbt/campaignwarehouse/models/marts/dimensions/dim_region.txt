@@ -1,0 +1,6 @@
+{{ config(materialized='table') }}
+
+select distinct
+    region
+from {{ ref('int_crm_revenue') }}
+where region is not null

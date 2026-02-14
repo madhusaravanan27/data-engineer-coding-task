@@ -1,0 +1,591 @@
+{
+ "cells": [
+  {
+   "cell_type": "code",
+   "execution_count": 63,
+   "id": "6b82853c-1072-46f0-8cb9-046a8d465a51",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Raw rows: 45\n"
+     ]
+    }
+   ],
+   "source": [
+    "# Loading the Facebook data\n",
+    "import pandas as pd\n",
+    "from datetime import datetime\n",
+    "\n",
+    "fbdf = pd.read_csv(\"facebook_export.csv\")\n",
+    "print(\"Raw rows:\", len(fbdf))\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 64,
+   "id": "755ea8b0-fd66-42ff-b2bd-d585be33faa9",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "campaign_id       0\n",
+       "campaign_name     0\n",
+       "date              0\n",
+       "impressions       0\n",
+       "clicks            0\n",
+       "spend             0\n",
+       "purchases         2\n",
+       "purchase_value    0\n",
+       "reach             0\n",
+       "frequency         0\n",
+       "dtype: int64"
+      ]
+     },
+     "execution_count": 64,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "# Null check for all the columns\n",
+    "fbdf.isnull().sum()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 39,
+   "id": "8388dd26-7b6a-4575-85ad-3d8066478c19",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "43\n"
+     ]
+    }
+   ],
+   "source": [
+    "# Dropping all the null values\n",
+    "fbdf= fbdf.dropna()\n",
+    "print(len(fbdf))"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 65,
+   "id": "6c7d6772-131c-43d6-b71f-977c390c25f1",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Date Formatting\n",
+    "fbdf[\"date\"] = pd.to_datetime(fbdf[\"date\"], errors=\"coerce\")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 66,
+   "id": "12610550-1838-4865-a802-95d3fd1f73f9",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "    campaign_id                campaign_name       date  impressions  clicks  \\\n",
+      "0   fb_camp_001  Spring Collection Awareness 2024-01-01        78450    1234   \n",
+      "1   fb_camp_001  Spring Collection Awareness 2024-01-02        82340    1345   \n",
+      "2   fb_camp_001  Spring Collection Awareness 2024-01-03        76890    1189   \n",
+      "3   fb_camp_001  Spring Collection Awareness 2024-01-04        89120    1456   \n",
+      "4   fb_camp_001  Spring Collection Awareness 2024-01-05        71230    1098   \n",
+      "5   fb_camp_001  Spring Collection Awareness 2024-01-06        52340     798   \n",
+      "6   fb_camp_001  Spring Collection Awareness 2024-01-07        54670     834   \n",
+      "7   fb_camp_001  Spring Collection Awareness 2024-01-08        84560    1378   \n",
+      "8   fb_camp_001  Spring Collection Awareness 2024-01-09        91230    1502   \n",
+      "9   fb_camp_001  Spring Collection Awareness 2024-01-10        87450    1423   \n",
+      "10  fb_camp_001  Spring Collection Awareness 2024-01-11        83120    1356   \n",
+      "11  fb_camp_001  Spring Collection Awareness 2024-01-12        79890    1298   \n",
+      "12  fb_camp_001  Spring Collection Awareness 2024-01-13        51230     778   \n",
+      "13  fb_camp_001  Spring Collection Awareness 2024-01-14        53450     812   \n",
+      "14  fb_camp_001  Spring Collection Awareness 2024-01-15        93450    1534   \n",
+      "15  fb_camp_002  Conversion Campaign - Promo 2024-01-01        34560    2345   \n",
+      "16  fb_camp_002  Conversion Campaign - Promo 2024-01-02        37890    2567   \n",
+      "17  fb_camp_002  Conversion Campaign - Promo 2024-01-03        32450    2189   \n",
+      "18  fb_camp_002  Conversion Campaign - Promo 2024-01-04        41230    2789   \n",
+      "19  fb_camp_002  Conversion Campaign - Promo 2024-01-05        29870    2012   \n",
+      "20  fb_camp_002  Conversion Campaign - Promo 2024-01-06        23450    1578   \n",
+      "21  fb_camp_002  Conversion Campaign - Promo 2024-01-07        24890    1678   \n",
+      "22  fb_camp_002  Conversion Campaign - Promo 2024-01-08        38920    2634   \n",
+      "23  fb_camp_002  Conversion Campaign - Promo 2024-01-09        43560    2945   \n",
+      "24  fb_camp_002  Conversion Campaign - Promo 2024-01-10        40120    2712   \n",
+      "25  fb_camp_002  Conversion Campaign - Promo 2024-01-11        37230    2512   \n",
+      "26  fb_camp_002  Conversion Campaign - Promo 2024-01-12        35670    2401   \n",
+      "27  fb_camp_002  Conversion Campaign - Promo 2024-01-13        22340    1502   \n",
+      "28  fb_camp_002  Conversion Campaign - Promo 2024-01-14        23780    1598   \n",
+      "29  fb_camp_002  Conversion Campaign - Promo 2024-01-15        45230    3067   \n",
+      "30  fb_camp_003    Video Views - Brand Story 2024-01-01       123450     890   \n",
+      "31  fb_camp_003    Video Views - Brand Story 2024-01-02       134560     978   \n",
+      "32  fb_camp_003    Video Views - Brand Story 2024-01-03       118920     812   \n",
+      "33  fb_camp_003    Video Views - Brand Story 2024-01-04       145670    1056   \n",
+      "34  fb_camp_003    Video Views - Brand Story 2024-01-05       108340     778   \n",
+      "35  fb_camp_003    Video Views - Brand Story 2024-01-06        82340     589   \n",
+      "36  fb_camp_003    Video Views - Brand Story 2024-01-07        87890     634   \n",
+      "37  fb_camp_003    Video Views - Brand Story 2024-01-08       138920    1002   \n",
+      "38  fb_camp_003    Video Views - Brand Story 2024-01-09       152340    1112   \n",
+      "39  fb_camp_003    Video Views - Brand Story 2024-01-10       143560    1034   \n",
+      "40  fb_camp_003    Video Views - Brand Story 2024-01-11       135670     978   \n",
+      "41  fb_camp_003    Video Views - Brand Story 2024-01-12       129340     934   \n",
+      "42  fb_camp_003    Video Views - Brand Story 2024-01-13        79230     567   \n",
+      "43  fb_camp_003    Video Views - Brand Story 2024-01-14        84560     612   \n",
+      "44  fb_camp_003    Video Views - Brand Story 2024-01-15       158920    1156   \n",
+      "\n",
+      "     spend  purchases  purchase_value   reach  frequency  \n",
+      "0   145.67       34.0          4250.0   65000       1.21  \n",
+      "1   156.89       42.0          5250.0   68000       1.21  \n",
+      "2   138.45       31.0          3875.0   63500       1.21  \n",
+      "3   167.23       48.0          6000.0   73500       1.21  \n",
+      "4   129.34       28.0          3500.0   59000       1.21  \n",
+      "5    94.56       19.0          2375.0   43500       1.20  \n",
+      "6    99.12       21.0          2625.0   45500       1.20  \n",
+      "7   159.34       45.0          5625.0   70000       1.21  \n",
+      "8   175.67       52.0          6500.0   75500       1.21  \n",
+      "9   163.89       47.0          5875.0   72500       1.21  \n",
+      "10  155.45       43.0          5375.0   69000       1.20  \n",
+      "11  149.23       39.0          4875.0   66500       1.20  \n",
+      "12   91.34        NaN          2250.0   42500       1.20  \n",
+      "13   95.67       20.0          2500.0   44500       1.20  \n",
+      "14  179.89       55.0          6875.0   77500       1.21  \n",
+      "15  289.34      156.0         21840.0   28500       1.21  \n",
+      "16  316.78      172.0         24080.0   31200       1.21  \n",
+      "17  269.45      142.0         19880.0   26800       1.21  \n",
+      "18  345.67      189.0         26460.0   34000       1.21  \n",
+      "19  248.23      128.0         17920.0   24700       1.21  \n",
+      "20  194.56       98.0         13720.0   19400       1.21  \n",
+      "21  206.89      105.0         14700.0   20600       1.21  \n",
+      "22  325.45      178.0         24920.0   32100       1.21  \n",
+      "23  364.23      198.0         27720.0   35900       1.21  \n",
+      "24  335.67      182.0         25480.0   33100       1.21  \n",
+      "25  310.45      168.0         23520.0   30700       1.21  \n",
+      "26  296.78      159.0         22260.0   29400       1.21  \n",
+      "27  185.34       93.0         13020.0   18500       1.21  \n",
+      "28  197.23       99.0         13860.0   19700       1.20  \n",
+      "29  378.89      207.0         28980.0   37300       1.21  \n",
+      "30   67.34        8.0           920.0   98500       1.25  \n",
+      "31   73.56       11.0          1265.0  107500       1.25  \n",
+      "32   61.23        6.0           690.0   95000       1.25  \n",
+      "33   79.89       14.0          1610.0  116500       1.25  \n",
+      "34   58.67        5.0           575.0   86700       1.25  \n",
+      "35   44.23        NaN           345.0   65900       1.25  \n",
+      "36   47.89        4.0           460.0   70300       1.25  \n",
+      "37   75.67       12.0          1380.0  111100       1.25  \n",
+      "38   83.45       16.0          1840.0  121900       1.25  \n",
+      "39   77.89       13.0          1495.0  114800       1.25  \n",
+      "40   73.34       10.0          1150.0  108500       1.25  \n",
+      "41   70.12        9.0          1035.0  103500       1.25  \n",
+      "42   42.67        2.0           230.0   63400       1.25  \n",
+      "43   46.12        3.0           345.0   67600       1.25  \n",
+      "44   87.23       18.0          2070.0  127100       1.25  \n"
+     ]
+    }
+   ],
+   "source": [
+    "print(fbdf)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 67,
+   "id": "f5ada46c-a030-4dd2-ba3e-cc3a83a776be",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Check for Required Columns\n",
+    "missing_required = fbdf[fbdf[[\"campaign_id\", \"date\", \"impressions\", \"clicks\", \"spend\",\"purchases\",\"purchase_value\"]].isnull().any(axis=1)].copy()\n",
+    "missing_required[\"_failed_rule\"] = \"required_fields_not_null\"\n",
+    "\n",
+    "# Handling Negative values\n",
+    "negative_values = fbdf[(fbdf[[\"impressions\",\"clicks\",\"spend\",\"purchases\",\"purchase_value\"]] < 0).any(axis=1)].copy()\n",
+    "negative_values[\"_failed_rule\"] = \"non_negative_metrics\"\n",
+    "\n",
+    "\n",
+    "# Handling Duplicates\n",
+    "duplicates = fbdf[fbdf.duplicated(subset=[\"campaign_id\", \"date\"], keep=False)].copy()\n",
+    "duplicates[\"_failed_rule\"] = \"campaign_date_unique\"\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 68,
+   "id": "4bd22ac7-1af9-4dd5-b8c3-54d8d1affdcf",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "fbdfstrict = (pd.concat([missing_required,negative_values,duplicates]).drop_duplicates())\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 69,
+   "id": "d4c6df5a-77f7-4dd3-8d33-94df990b77be",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "    campaign_id                campaign_name       date  impressions  clicks  \\\n",
+      "12  fb_camp_001  Spring Collection Awareness 2024-01-13        51230     778   \n",
+      "35  fb_camp_003    Video Views - Brand Story 2024-01-06        82340     589   \n",
+      "\n",
+      "    spend  purchases  purchase_value  reach  frequency  \\\n",
+      "12  91.34        NaN          2250.0  42500       1.20   \n",
+      "35  44.23        NaN           345.0  65900       1.25   \n",
+      "\n",
+      "                _failed_rule  \n",
+      "12  required_fields_not_null  \n",
+      "35  required_fields_not_null  \n"
+     ]
+    }
+   ],
+   "source": [
+    "print(fbdfstrict)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 70,
+   "id": "de5b621e-915a-4a8c-a7d8-2099b354b8ee",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "valid_fb = fbdf[ ~fbdf.index.isin(fbdfstrict.index)].copy()\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 71,
+   "id": "d5c2c76a-a61a-4cfc-9cbc-1629a7861635",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "    campaign_id                campaign_name       date  impressions  clicks  \\\n",
+      "0   fb_camp_001  Spring Collection Awareness 2024-01-01        78450    1234   \n",
+      "1   fb_camp_001  Spring Collection Awareness 2024-01-02        82340    1345   \n",
+      "2   fb_camp_001  Spring Collection Awareness 2024-01-03        76890    1189   \n",
+      "3   fb_camp_001  Spring Collection Awareness 2024-01-04        89120    1456   \n",
+      "4   fb_camp_001  Spring Collection Awareness 2024-01-05        71230    1098   \n",
+      "5   fb_camp_001  Spring Collection Awareness 2024-01-06        52340     798   \n",
+      "6   fb_camp_001  Spring Collection Awareness 2024-01-07        54670     834   \n",
+      "7   fb_camp_001  Spring Collection Awareness 2024-01-08        84560    1378   \n",
+      "8   fb_camp_001  Spring Collection Awareness 2024-01-09        91230    1502   \n",
+      "9   fb_camp_001  Spring Collection Awareness 2024-01-10        87450    1423   \n",
+      "10  fb_camp_001  Spring Collection Awareness 2024-01-11        83120    1356   \n",
+      "11  fb_camp_001  Spring Collection Awareness 2024-01-12        79890    1298   \n",
+      "13  fb_camp_001  Spring Collection Awareness 2024-01-14        53450     812   \n",
+      "14  fb_camp_001  Spring Collection Awareness 2024-01-15        93450    1534   \n",
+      "15  fb_camp_002  Conversion Campaign - Promo 2024-01-01        34560    2345   \n",
+      "16  fb_camp_002  Conversion Campaign - Promo 2024-01-02        37890    2567   \n",
+      "17  fb_camp_002  Conversion Campaign - Promo 2024-01-03        32450    2189   \n",
+      "18  fb_camp_002  Conversion Campaign - Promo 2024-01-04        41230    2789   \n",
+      "19  fb_camp_002  Conversion Campaign - Promo 2024-01-05        29870    2012   \n",
+      "20  fb_camp_002  Conversion Campaign - Promo 2024-01-06        23450    1578   \n",
+      "21  fb_camp_002  Conversion Campaign - Promo 2024-01-07        24890    1678   \n",
+      "22  fb_camp_002  Conversion Campaign - Promo 2024-01-08        38920    2634   \n",
+      "23  fb_camp_002  Conversion Campaign - Promo 2024-01-09        43560    2945   \n",
+      "24  fb_camp_002  Conversion Campaign - Promo 2024-01-10        40120    2712   \n",
+      "25  fb_camp_002  Conversion Campaign - Promo 2024-01-11        37230    2512   \n",
+      "26  fb_camp_002  Conversion Campaign - Promo 2024-01-12        35670    2401   \n",
+      "27  fb_camp_002  Conversion Campaign - Promo 2024-01-13        22340    1502   \n",
+      "28  fb_camp_002  Conversion Campaign - Promo 2024-01-14        23780    1598   \n",
+      "29  fb_camp_002  Conversion Campaign - Promo 2024-01-15        45230    3067   \n",
+      "30  fb_camp_003    Video Views - Brand Story 2024-01-01       123450     890   \n",
+      "31  fb_camp_003    Video Views - Brand Story 2024-01-02       134560     978   \n",
+      "32  fb_camp_003    Video Views - Brand Story 2024-01-03       118920     812   \n",
+      "33  fb_camp_003    Video Views - Brand Story 2024-01-04       145670    1056   \n",
+      "34  fb_camp_003    Video Views - Brand Story 2024-01-05       108340     778   \n",
+      "36  fb_camp_003    Video Views - Brand Story 2024-01-07        87890     634   \n",
+      "37  fb_camp_003    Video Views - Brand Story 2024-01-08       138920    1002   \n",
+      "38  fb_camp_003    Video Views - Brand Story 2024-01-09       152340    1112   \n",
+      "39  fb_camp_003    Video Views - Brand Story 2024-01-10       143560    1034   \n",
+      "40  fb_camp_003    Video Views - Brand Story 2024-01-11       135670     978   \n",
+      "41  fb_camp_003    Video Views - Brand Story 2024-01-12       129340     934   \n",
+      "42  fb_camp_003    Video Views - Brand Story 2024-01-13        79230     567   \n",
+      "43  fb_camp_003    Video Views - Brand Story 2024-01-14        84560     612   \n",
+      "44  fb_camp_003    Video Views - Brand Story 2024-01-15       158920    1156   \n",
+      "\n",
+      "     spend  purchases  purchase_value   reach  frequency  \n",
+      "0   145.67       34.0          4250.0   65000       1.21  \n",
+      "1   156.89       42.0          5250.0   68000       1.21  \n",
+      "2   138.45       31.0          3875.0   63500       1.21  \n",
+      "3   167.23       48.0          6000.0   73500       1.21  \n",
+      "4   129.34       28.0          3500.0   59000       1.21  \n",
+      "5    94.56       19.0          2375.0   43500       1.20  \n",
+      "6    99.12       21.0          2625.0   45500       1.20  \n",
+      "7   159.34       45.0          5625.0   70000       1.21  \n",
+      "8   175.67       52.0          6500.0   75500       1.21  \n",
+      "9   163.89       47.0          5875.0   72500       1.21  \n",
+      "10  155.45       43.0          5375.0   69000       1.20  \n",
+      "11  149.23       39.0          4875.0   66500       1.20  \n",
+      "13   95.67       20.0          2500.0   44500       1.20  \n",
+      "14  179.89       55.0          6875.0   77500       1.21  \n",
+      "15  289.34      156.0         21840.0   28500       1.21  \n",
+      "16  316.78      172.0         24080.0   31200       1.21  \n",
+      "17  269.45      142.0         19880.0   26800       1.21  \n",
+      "18  345.67      189.0         26460.0   34000       1.21  \n",
+      "19  248.23      128.0         17920.0   24700       1.21  \n",
+      "20  194.56       98.0         13720.0   19400       1.21  \n",
+      "21  206.89      105.0         14700.0   20600       1.21  \n",
+      "22  325.45      178.0         24920.0   32100       1.21  \n",
+      "23  364.23      198.0         27720.0   35900       1.21  \n",
+      "24  335.67      182.0         25480.0   33100       1.21  \n",
+      "25  310.45      168.0         23520.0   30700       1.21  \n",
+      "26  296.78      159.0         22260.0   29400       1.21  \n",
+      "27  185.34       93.0         13020.0   18500       1.21  \n",
+      "28  197.23       99.0         13860.0   19700       1.20  \n",
+      "29  378.89      207.0         28980.0   37300       1.21  \n",
+      "30   67.34        8.0           920.0   98500       1.25  \n",
+      "31   73.56       11.0          1265.0  107500       1.25  \n",
+      "32   61.23        6.0           690.0   95000       1.25  \n",
+      "33   79.89       14.0          1610.0  116500       1.25  \n",
+      "34   58.67        5.0           575.0   86700       1.25  \n",
+      "36   47.89        4.0           460.0   70300       1.25  \n",
+      "37   75.67       12.0          1380.0  111100       1.25  \n",
+      "38   83.45       16.0          1840.0  121900       1.25  \n",
+      "39   77.89       13.0          1495.0  114800       1.25  \n",
+      "40   73.34       10.0          1150.0  108500       1.25  \n",
+      "41   70.12        9.0          1035.0  103500       1.25  \n",
+      "42   42.67        2.0           230.0   63400       1.25  \n",
+      "43   46.12        3.0           345.0   67600       1.25  \n",
+      "44   87.23       18.0          2070.0  127100       1.25  \n"
+     ]
+    }
+   ],
+   "source": [
+    "print(valid_fb)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 72,
+   "id": "49c3290e-af91-4ce5-add3-5ebed7ba0417",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Total: 45\n",
+      "Rejected: 2\n",
+      "Valid: 43\n",
+      "Check: True\n"
+     ]
+    }
+   ],
+   "source": [
+    "\n",
+    "print(\"Total:\", len(fbdf))\n",
+    "print(\"Rejected:\", len(fbdfstrict))\n",
+    "print(\"Valid:\", len(valid_fb))\n",
+    "print(\"Check:\", len(fbdf) == len(valid_fb) + len(fbdfstrict))\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 73,
+   "id": "5dd8d3c8-5383-4800-b609-e9939ef589c2",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "valid_fb[\"source_system\"] = \"facebook\"\n",
+    "valid_fb[\"ingested_at\"] = datetime.utcnow()\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 46,
+   "id": "0a8f9bd9-be58-4852-8581-59cb9d3c3496",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "    campaign_id                campaign_name       date  impressions  clicks  \\\n",
+      "0   fb_camp_001  Spring Collection Awareness 2024-01-01        78450    1234   \n",
+      "1   fb_camp_001  Spring Collection Awareness 2024-01-02        82340    1345   \n",
+      "2   fb_camp_001  Spring Collection Awareness 2024-01-03        76890    1189   \n",
+      "3   fb_camp_001  Spring Collection Awareness 2024-01-04        89120    1456   \n",
+      "4   fb_camp_001  Spring Collection Awareness 2024-01-05        71230    1098   \n",
+      "5   fb_camp_001  Spring Collection Awareness 2024-01-06        52340     798   \n",
+      "6   fb_camp_001  Spring Collection Awareness 2024-01-07        54670     834   \n",
+      "7   fb_camp_001  Spring Collection Awareness 2024-01-08        84560    1378   \n",
+      "8   fb_camp_001  Spring Collection Awareness 2024-01-09        91230    1502   \n",
+      "9   fb_camp_001  Spring Collection Awareness 2024-01-10        87450    1423   \n",
+      "10  fb_camp_001  Spring Collection Awareness 2024-01-11        83120    1356   \n",
+      "11  fb_camp_001  Spring Collection Awareness 2024-01-12        79890    1298   \n",
+      "13  fb_camp_001  Spring Collection Awareness 2024-01-14        53450     812   \n",
+      "14  fb_camp_001  Spring Collection Awareness 2024-01-15        93450    1534   \n",
+      "15  fb_camp_002  Conversion Campaign - Promo 2024-01-01        34560    2345   \n",
+      "16  fb_camp_002  Conversion Campaign - Promo 2024-01-02        37890    2567   \n",
+      "17  fb_camp_002  Conversion Campaign - Promo 2024-01-03        32450    2189   \n",
+      "18  fb_camp_002  Conversion Campaign - Promo 2024-01-04        41230    2789   \n",
+      "19  fb_camp_002  Conversion Campaign - Promo 2024-01-05        29870    2012   \n",
+      "20  fb_camp_002  Conversion Campaign - Promo 2024-01-06        23450    1578   \n",
+      "21  fb_camp_002  Conversion Campaign - Promo 2024-01-07        24890    1678   \n",
+      "22  fb_camp_002  Conversion Campaign - Promo 2024-01-08        38920    2634   \n",
+      "23  fb_camp_002  Conversion Campaign - Promo 2024-01-09        43560    2945   \n",
+      "24  fb_camp_002  Conversion Campaign - Promo 2024-01-10        40120    2712   \n",
+      "25  fb_camp_002  Conversion Campaign - Promo 2024-01-11        37230    2512   \n",
+      "26  fb_camp_002  Conversion Campaign - Promo 2024-01-12        35670    2401   \n",
+      "27  fb_camp_002  Conversion Campaign - Promo 2024-01-13        22340    1502   \n",
+      "28  fb_camp_002  Conversion Campaign - Promo 2024-01-14        23780    1598   \n",
+      "29  fb_camp_002  Conversion Campaign - Promo 2024-01-15        45230    3067   \n",
+      "30  fb_camp_003    Video Views - Brand Story 2024-01-01       123450     890   \n",
+      "31  fb_camp_003    Video Views - Brand Story 2024-01-02       134560     978   \n",
+      "32  fb_camp_003    Video Views - Brand Story 2024-01-03       118920     812   \n",
+      "33  fb_camp_003    Video Views - Brand Story 2024-01-04       145670    1056   \n",
+      "34  fb_camp_003    Video Views - Brand Story 2024-01-05       108340     778   \n",
+      "36  fb_camp_003    Video Views - Brand Story 2024-01-07        87890     634   \n",
+      "37  fb_camp_003    Video Views - Brand Story 2024-01-08       138920    1002   \n",
+      "38  fb_camp_003    Video Views - Brand Story 2024-01-09       152340    1112   \n",
+      "39  fb_camp_003    Video Views - Brand Story 2024-01-10       143560    1034   \n",
+      "40  fb_camp_003    Video Views - Brand Story 2024-01-11       135670     978   \n",
+      "41  fb_camp_003    Video Views - Brand Story 2024-01-12       129340     934   \n",
+      "42  fb_camp_003    Video Views - Brand Story 2024-01-13        79230     567   \n",
+      "43  fb_camp_003    Video Views - Brand Story 2024-01-14        84560     612   \n",
+      "44  fb_camp_003    Video Views - Brand Story 2024-01-15       158920    1156   \n",
+      "\n",
+      "     spend  purchases  purchase_value   reach  frequency source_system  \\\n",
+      "0   145.67       34.0          4250.0   65000       1.21  facebook_ads   \n",
+      "1   156.89       42.0          5250.0   68000       1.21  facebook_ads   \n",
+      "2   138.45       31.0          3875.0   63500       1.21  facebook_ads   \n",
+      "3   167.23       48.0          6000.0   73500       1.21  facebook_ads   \n",
+      "4   129.34       28.0          3500.0   59000       1.21  facebook_ads   \n",
+      "5    94.56       19.0          2375.0   43500       1.20  facebook_ads   \n",
+      "6    99.12       21.0          2625.0   45500       1.20  facebook_ads   \n",
+      "7   159.34       45.0          5625.0   70000       1.21  facebook_ads   \n",
+      "8   175.67       52.0          6500.0   75500       1.21  facebook_ads   \n",
+      "9   163.89       47.0          5875.0   72500       1.21  facebook_ads   \n",
+      "10  155.45       43.0          5375.0   69000       1.20  facebook_ads   \n",
+      "11  149.23       39.0          4875.0   66500       1.20  facebook_ads   \n",
+      "13   95.67       20.0          2500.0   44500       1.20  facebook_ads   \n",
+      "14  179.89       55.0          6875.0   77500       1.21  facebook_ads   \n",
+      "15  289.34      156.0         21840.0   28500       1.21  facebook_ads   \n",
+      "16  316.78      172.0         24080.0   31200       1.21  facebook_ads   \n",
+      "17  269.45      142.0         19880.0   26800       1.21  facebook_ads   \n",
+      "18  345.67      189.0         26460.0   34000       1.21  facebook_ads   \n",
+      "19  248.23      128.0         17920.0   24700       1.21  facebook_ads   \n",
+      "20  194.56       98.0         13720.0   19400       1.21  facebook_ads   \n",
+      "21  206.89      105.0         14700.0   20600       1.21  facebook_ads   \n",
+      "22  325.45      178.0         24920.0   32100       1.21  facebook_ads   \n",
+      "23  364.23      198.0         27720.0   35900       1.21  facebook_ads   \n",
+      "24  335.67      182.0         25480.0   33100       1.21  facebook_ads   \n",
+      "25  310.45      168.0         23520.0   30700       1.21  facebook_ads   \n",
+      "26  296.78      159.0         22260.0   29400       1.21  facebook_ads   \n",
+      "27  185.34       93.0         13020.0   18500       1.21  facebook_ads   \n",
+      "28  197.23       99.0         13860.0   19700       1.20  facebook_ads   \n",
+      "29  378.89      207.0         28980.0   37300       1.21  facebook_ads   \n",
+      "30   67.34        8.0           920.0   98500       1.25  facebook_ads   \n",
+      "31   73.56       11.0          1265.0  107500       1.25  facebook_ads   \n",
+      "32   61.23        6.0           690.0   95000       1.25  facebook_ads   \n",
+      "33   79.89       14.0          1610.0  116500       1.25  facebook_ads   \n",
+      "34   58.67        5.0           575.0   86700       1.25  facebook_ads   \n",
+      "36   47.89        4.0           460.0   70300       1.25  facebook_ads   \n",
+      "37   75.67       12.0          1380.0  111100       1.25  facebook_ads   \n",
+      "38   83.45       16.0          1840.0  121900       1.25  facebook_ads   \n",
+      "39   77.89       13.0          1495.0  114800       1.25  facebook_ads   \n",
+      "40   73.34       10.0          1150.0  108500       1.25  facebook_ads   \n",
+      "41   70.12        9.0          1035.0  103500       1.25  facebook_ads   \n",
+      "42   42.67        2.0           230.0   63400       1.25  facebook_ads   \n",
+      "43   46.12        3.0           345.0   67600       1.25  facebook_ads   \n",
+      "44   87.23       18.0          2070.0  127100       1.25  facebook_ads   \n",
+      "\n",
+      "                  ingested_at  \n",
+      "0  2026-02-09 18:25:16.129459  \n",
+      "1  2026-02-09 18:25:16.129459  \n",
+      "2  2026-02-09 18:25:16.129459  \n",
+      "3  2026-02-09 18:25:16.129459  \n",
+      "4  2026-02-09 18:25:16.129459  \n",
+      "5  2026-02-09 18:25:16.129459  \n",
+      "6  2026-02-09 18:25:16.129459  \n",
+      "7  2026-02-09 18:25:16.129459  \n",
+      "8  2026-02-09 18:25:16.129459  \n",
+      "9  2026-02-09 18:25:16.129459  \n",
+      "10 2026-02-09 18:25:16.129459  \n",
+      "11 2026-02-09 18:25:16.129459  \n",
+      "13 2026-02-09 18:25:16.129459  \n",
+      "14 2026-02-09 18:25:16.129459  \n",
+      "15 2026-02-09 18:25:16.129459  \n",
+      "16 2026-02-09 18:25:16.129459  \n",
+      "17 2026-02-09 18:25:16.129459  \n",
+      "18 2026-02-09 18:25:16.129459  \n",
+      "19 2026-02-09 18:25:16.129459  \n",
+      "20 2026-02-09 18:25:16.129459  \n",
+      "21 2026-02-09 18:25:16.129459  \n",
+      "22 2026-02-09 18:25:16.129459  \n",
+      "23 2026-02-09 18:25:16.129459  \n",
+      "24 2026-02-09 18:25:16.129459  \n",
+      "25 2026-02-09 18:25:16.129459  \n",
+      "26 2026-02-09 18:25:16.129459  \n",
+      "27 2026-02-09 18:25:16.129459  \n",
+      "28 2026-02-09 18:25:16.129459  \n",
+      "29 2026-02-09 18:25:16.129459  \n",
+      "30 2026-02-09 18:25:16.129459  \n",
+      "31 2026-02-09 18:25:16.129459  \n",
+      "32 2026-02-09 18:25:16.129459  \n",
+      "33 2026-02-09 18:25:16.129459  \n",
+      "34 2026-02-09 18:25:16.129459  \n",
+      "36 2026-02-09 18:25:16.129459  \n",
+      "37 2026-02-09 18:25:16.129459  \n",
+      "38 2026-02-09 18:25:16.129459  \n",
+      "39 2026-02-09 18:25:16.129459  \n",
+      "40 2026-02-09 18:25:16.129459  \n",
+      "41 2026-02-09 18:25:16.129459  \n",
+      "42 2026-02-09 18:25:16.129459  \n",
+      "43 2026-02-09 18:25:16.129459  \n",
+      "44 2026-02-09 18:25:16.129459  \n"
+     ]
+    }
+   ],
+   "source": [
+    "print(valid_fb)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "4135b042-bdbf-450d-bd31-e7fca805053b",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3 (ipykernel)",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.9.6"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 5
+}

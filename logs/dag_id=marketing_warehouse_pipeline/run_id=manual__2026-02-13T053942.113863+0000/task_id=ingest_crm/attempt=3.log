@@ -1,0 +1,59 @@
+[2026-02-13T05:49:57.667+0000] {local_task_job_runner.py:120} INFO - ::group::Pre task execution logs
+[2026-02-13T05:49:57.817+0000] {taskinstance.py:2076} INFO - Dependencies all met for dep_context=non-requeueable deps ti=<TaskInstance: marketing_warehouse_pipeline.ingest_crm manual__2026-02-13T05:39:42.113863+00:00 [queued]>
+[2026-02-13T05:49:57.832+0000] {taskinstance.py:2076} INFO - Dependencies all met for dep_context=requeueable deps ti=<TaskInstance: marketing_warehouse_pipeline.ingest_crm manual__2026-02-13T05:39:42.113863+00:00 [queued]>
+[2026-02-13T05:49:57.833+0000] {taskinstance.py:2306} INFO - Starting attempt 3 of 3
+[2026-02-13T05:49:57.859+0000] {taskinstance.py:2330} INFO - Executing <Task(BashOperator): ingest_crm> on 2026-02-13 05:39:42.113863+00:00
+[2026-02-13T05:49:57.868+0000] {standard_task_runner.py:90} INFO - Running: ['airflow', 'tasks', 'run', 'marketing_warehouse_pipeline', 'ingest_crm', 'manual__2026-02-13T05:39:42.113863+00:00', '--job-id', '104', '--raw', '--subdir', 'DAGS_FOLDER/marketing_warehouse_pipeline.py', '--cfg-path', '/tmp/tmp879kt2od']
+[2026-02-13T05:49:57.872+0000] {standard_task_runner.py:91} INFO - Job 104: Subtask ingest_crm
+[2026-02-13T05:49:57.873+0000] {logging_mixin.py:188} WARNING - /home/airflow/.local/lib/python3.12/site-packages/airflow/task/task_runner/standard_task_runner.py:61 DeprecationWarning: This process (pid=2514) is multi-threaded, use of fork() may lead to deadlocks in the child.
+[2026-02-13T05:49:57.875+0000] {standard_task_runner.py:63} INFO - Started process 2515 to run task
+[2026-02-13T05:49:58.252+0000] {task_command.py:426} INFO - Running <TaskInstance: marketing_warehouse_pipeline.ingest_crm manual__2026-02-13T05:39:42.113863+00:00 [running]> on host 7fe2c4f78d9e
+[2026-02-13T05:49:58.815+0000] {taskinstance.py:2648} INFO - Exporting env vars: AIRFLOW_CTX_DAG_OWNER='data-engineering' AIRFLOW_CTX_DAG_ID='marketing_warehouse_pipeline' AIRFLOW_CTX_TASK_ID='ingest_crm' AIRFLOW_CTX_EXECUTION_DATE='2026-02-13T05:39:42.113863+00:00' AIRFLOW_CTX_TRY_NUMBER='3' AIRFLOW_CTX_DAG_RUN_ID='manual__2026-02-13T05:39:42.113863+00:00'
+[2026-02-13T05:49:58.816+0000] {taskinstance.py:430} INFO - ::endgroup::
+[2026-02-13T05:49:58.838+0000] {subprocess.py:63} INFO - Tmp dir root location: /tmp
+[2026-02-13T05:49:58.840+0000] {subprocess.py:75} INFO - Running command: ['/usr/bin/bash', '-c', 'python /opt/airflow/ingestion/load_crm.py']
+[2026-02-13T05:49:58.850+0000] {subprocess.py:86} INFO - Output:
+[2026-02-13T05:50:00.459+0000] {subprocess.py:93} INFO - Structurally bad rows: 1
+[2026-02-13T05:50:00.460+0000] {subprocess.py:93} INFO - Revenue bounds:
+[2026-02-13T05:50:00.461+0000] {subprocess.py:93} INFO - Lower: -271.0
+[2026-02-13T05:50:00.461+0000] {subprocess.py:93} INFO - Upper: 689.0
+[2026-02-13T05:50:00.462+0000] {subprocess.py:93} INFO - Outliers found: 1
+[2026-02-13T05:50:00.463+0000] {subprocess.py:93} INFO - Parsed rows: 84
+[2026-02-13T05:50:00.464+0000] {subprocess.py:93} INFO - Rejected rows: 3
+[2026-02-13T05:50:00.466+0000] {subprocess.py:93} INFO -      order_id customer_id  ...       date        _dq_reason
+[2026-02-13T05:50:00.468+0000] {subprocess.py:93} INFO - 7   ORD-10008   CUST-6789  ... 2024-01-02  missing_required
+[2026-02-13T05:50:00.469+0000] {subprocess.py:93} INFO - 76  ORD-10076   CUST-1098  ... 2024-01-15  negative_revenue
+[2026-02-13T05:50:00.470+0000] {subprocess.py:93} INFO - 81  ORD-10081   CUST-2109  ... 2024-01-15   revenue_outlier
+[2026-02-13T05:50:00.471+0000] {subprocess.py:93} INFO - 
+[2026-02-13T05:50:00.472+0000] {subprocess.py:93} INFO - [3 rows x 10 columns]
+[2026-02-13T05:50:00.473+0000] {subprocess.py:93} INFO - Valid rows: 81
+[2026-02-13T05:50:00.474+0000] {subprocess.py:93} INFO - Valid unique order_ids: 78
+[2026-02-13T05:50:00.475+0000] {subprocess.py:93} INFO - Traceback (most recent call last):
+[2026-02-13T05:50:00.476+0000] {subprocess.py:93} INFO -   File "/opt/airflow/ingestion/load_crm.py", line 210, in <module>
+[2026-02-13T05:50:00.477+0000] {subprocess.py:93} INFO -     df = transform_crm(df)
+[2026-02-13T05:50:00.478+0000] {subprocess.py:93} INFO -          ^^^^^^^^^^^^^^^^^
+[2026-02-13T05:50:00.479+0000] {subprocess.py:93} INFO -   File "/opt/airflow/ingestion/load_crm.py", line 151, in transform_crm
+[2026-02-13T05:50:00.480+0000] {subprocess.py:93} INFO -     df["ingested_at"] = datetime.now(timezone.utc)
+[2026-02-13T05:50:00.481+0000] {subprocess.py:93} INFO -     ~~^^^^^^^^^^^^^^^
+[2026-02-13T05:50:00.482+0000] {subprocess.py:93} INFO - TypeError: 'int' object does not support item assignment
+[2026-02-13T05:50:00.621+0000] {subprocess.py:97} INFO - Command exited with return code 1
+[2026-02-13T05:50:00.622+0000] {taskinstance.py:441} INFO - ::group::Post task execution logs
+[2026-02-13T05:50:00.778+0000] {taskinstance.py:2905} ERROR - Task failed with exception
+Traceback (most recent call last):
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/taskinstance.py", line 465, in _execute_task
+    result = _execute_callable(context=context, **execute_callable_kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/taskinstance.py", line 432, in _execute_callable
+    return execute_callable(context=context, **execute_callable_kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/models/baseoperator.py", line 400, in wrapper
+    return func(self, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/airflow/.local/lib/python3.12/site-packages/airflow/operators/bash.py", line 243, in execute
+    raise AirflowException(
+airflow.exceptions.AirflowException: Bash command failed. The command returned a non-zero exit code 1.
+[2026-02-13T05:50:00.785+0000] {taskinstance.py:1206} INFO - Marking task as FAILED. dag_id=marketing_warehouse_pipeline, task_id=ingest_crm, run_id=manual__2026-02-13T05:39:42.113863+00:00, execution_date=20260213T053942, start_date=20260213T054957, end_date=20260213T055000
+[2026-02-13T05:50:00.815+0000] {standard_task_runner.py:110} ERROR - Failed to execute job 104 for task ingest_crm (Bash command failed. The command returned a non-zero exit code 1.; 2515)
+[2026-02-13T05:50:00.862+0000] {local_task_job_runner.py:240} INFO - Task exited with return code 1
+[2026-02-13T05:50:01.033+0000] {taskinstance.py:3498} INFO - 0 downstream tasks scheduled from follow-on schedule check
+[2026-02-13T05:50:01.044+0000] {local_task_job_runner.py:222} INFO - ::endgroup::

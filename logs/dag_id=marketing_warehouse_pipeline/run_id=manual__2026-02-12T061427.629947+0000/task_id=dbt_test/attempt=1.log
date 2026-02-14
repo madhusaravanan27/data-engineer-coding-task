@@ -1,0 +1,66 @@
+[2026-02-12T06:20:40.323+0000] {local_task_job_runner.py:120} INFO - ::group::Pre task execution logs
+[2026-02-12T06:20:40.514+0000] {taskinstance.py:2076} INFO - Dependencies all met for dep_context=non-requeueable deps ti=<TaskInstance: marketing_warehouse_pipeline.dbt_test manual__2026-02-12T06:14:27.629947+00:00 [queued]>
+[2026-02-12T06:20:40.529+0000] {taskinstance.py:2076} INFO - Dependencies all met for dep_context=requeueable deps ti=<TaskInstance: marketing_warehouse_pipeline.dbt_test manual__2026-02-12T06:14:27.629947+00:00 [queued]>
+[2026-02-12T06:20:40.530+0000] {taskinstance.py:2306} INFO - Starting attempt 1 of 3
+[2026-02-12T06:20:40.560+0000] {taskinstance.py:2330} INFO - Executing <Task(BashOperator): dbt_test> on 2026-02-12 06:14:27.629947+00:00
+[2026-02-12T06:20:40.570+0000] {standard_task_runner.py:90} INFO - Running: ['airflow', 'tasks', 'run', 'marketing_warehouse_pipeline', 'dbt_test', 'manual__2026-02-12T06:14:27.629947+00:00', '--job-id', '77', '--raw', '--subdir', 'DAGS_FOLDER/marketing_warehouse_pipeline.py', '--cfg-path', '/tmp/tmprkg6kqws']
+[2026-02-12T06:20:40.574+0000] {standard_task_runner.py:91} INFO - Job 77: Subtask dbt_test
+[2026-02-12T06:20:40.576+0000] {logging_mixin.py:188} WARNING - /home/airflow/.local/lib/python3.12/site-packages/airflow/task/task_runner/standard_task_runner.py:61 DeprecationWarning: This process (pid=1017) is multi-threaded, use of fork() may lead to deadlocks in the child.
+[2026-02-12T06:20:40.577+0000] {standard_task_runner.py:63} INFO - Started process 1018 to run task
+[2026-02-12T06:20:41.023+0000] {task_command.py:426} INFO - Running <TaskInstance: marketing_warehouse_pipeline.dbt_test manual__2026-02-12T06:14:27.629947+00:00 [running]> on host 1fba4c36ee31
+[2026-02-12T06:20:41.653+0000] {taskinstance.py:2648} INFO - Exporting env vars: AIRFLOW_CTX_DAG_OWNER='data-engineering' AIRFLOW_CTX_DAG_ID='marketing_warehouse_pipeline' AIRFLOW_CTX_TASK_ID='dbt_test' AIRFLOW_CTX_EXECUTION_DATE='2026-02-12T06:14:27.629947+00:00' AIRFLOW_CTX_TRY_NUMBER='1' AIRFLOW_CTX_DAG_RUN_ID='manual__2026-02-12T06:14:27.629947+00:00'
+[2026-02-12T06:20:41.654+0000] {taskinstance.py:430} INFO - ::endgroup::
+[2026-02-12T06:20:41.681+0000] {subprocess.py:63} INFO - Tmp dir root location: /tmp
+[2026-02-12T06:20:41.684+0000] {subprocess.py:75} INFO - Running command: ['/usr/bin/bash', '-c', '\n    cd /opt/airflow/dbt/campaignwarehouse &&\n    dbt test --profiles-dir /opt/airflow/dbt\n    ']
+[2026-02-12T06:20:41.696+0000] {subprocess.py:86} INFO - Output:
+[2026-02-12T06:20:45.347+0000] {subprocess.py:93} INFO - [0m06:20:45  Running with dbt=1.11.3
+[2026-02-12T06:20:45.776+0000] {subprocess.py:93} INFO - [0m06:20:45  Registered adapter: postgres=1.10.0
+[2026-02-12T06:20:46.472+0000] {subprocess.py:93} INFO - [0m06:20:46  [[33mWARNING[0m]: Configuration paths exist in your dbt_project.yml file which do not apply to any resources.
+[2026-02-12T06:20:46.472+0000] {subprocess.py:93} INFO - There are 1 unused configuration paths:
+[2026-02-12T06:20:46.473+0000] {subprocess.py:93} INFO - - models.campaignwarehouse.example
+[2026-02-12T06:20:46.829+0000] {subprocess.py:93} INFO - [0m06:20:46  Found 8 models, 15 data tests, 3 sources, 464 macros
+[2026-02-12T06:20:46.836+0000] {subprocess.py:93} INFO - [0m06:20:46
+[2026-02-12T06:20:46.838+0000] {subprocess.py:93} INFO - [0m06:20:46  Concurrency: 4 threads (target='dev')
+[2026-02-12T06:20:46.839+0000] {subprocess.py:93} INFO - [0m06:20:46
+[2026-02-12T06:20:47.162+0000] {subprocess.py:93} INFO - [0m06:20:47  1 of 15 START test accepted_values_fct_campaign_performance_channel__google__facebook  [RUN]
+[2026-02-12T06:20:47.163+0000] {subprocess.py:93} INFO - [0m06:20:47  2 of 15 START test dim_campaign_unique_campaign_channel ........................ [RUN]
+[2026-02-12T06:20:47.165+0000] {subprocess.py:93} INFO - [0m06:20:47  3 of 15 START test int_crm_revenue_revenue_nonnegative ......................... [RUN]
+[2026-02-12T06:20:47.167+0000] {subprocess.py:93} INFO - [0m06:20:47  4 of 15 START test not_null_dim_campaign_campaign_id ........................... [RUN]
+[2026-02-12T06:20:47.473+0000] {subprocess.py:93} INFO - [0m06:20:47  2 of 15 PASS dim_campaign_unique_campaign_channel .............................. [[32mPASS[0m in 0.30s]
+[2026-02-12T06:20:47.478+0000] {subprocess.py:93} INFO - [0m06:20:47  3 of 15 PASS int_crm_revenue_revenue_nonnegative ............................... [[32mPASS[0m in 0.31s]
+[2026-02-12T06:20:47.480+0000] {subprocess.py:93} INFO - [0m06:20:47  1 of 15 PASS accepted_values_fct_campaign_performance_channel__google__facebook  [[32mPASS[0m in 0.31s]
+[2026-02-12T06:20:47.486+0000] {subprocess.py:93} INFO - [0m06:20:47  4 of 15 PASS not_null_dim_campaign_campaign_id ................................. [[32mPASS[0m in 0.31s]
+[2026-02-12T06:20:47.503+0000] {subprocess.py:93} INFO - [0m06:20:47  5 of 15 START test not_null_dim_campaign_channel ............................... [RUN]
+[2026-02-12T06:20:47.508+0000] {subprocess.py:93} INFO - [0m06:20:47  6 of 15 START test not_null_fct_campaign_performance_activity_date ............. [RUN]
+[2026-02-12T06:20:47.510+0000] {subprocess.py:93} INFO - [0m06:20:47  7 of 15 START test not_null_fct_campaign_performance_campaign_id ............... [RUN]
+[2026-02-12T06:20:47.514+0000] {subprocess.py:93} INFO - [0m06:20:47  8 of 15 START test not_null_fct_campaign_performance_channel ................... [RUN]
+[2026-02-12T06:20:47.784+0000] {subprocess.py:93} INFO - [0m06:20:47  6 of 15 PASS not_null_fct_campaign_performance_activity_date ................... [[32mPASS[0m in 0.27s]
+[2026-02-12T06:20:47.799+0000] {subprocess.py:93} INFO - [0m06:20:47  7 of 15 PASS not_null_fct_campaign_performance_campaign_id ..................... [[32mPASS[0m in 0.28s]
+[2026-02-12T06:20:47.801+0000] {subprocess.py:93} INFO - [0m06:20:47  8 of 15 PASS not_null_fct_campaign_performance_channel ......................... [[32mPASS[0m in 0.28s]
+[2026-02-12T06:20:47.806+0000] {subprocess.py:93} INFO - [0m06:20:47  5 of 15 PASS not_null_dim_campaign_channel ..................................... [[32mPASS[0m in 0.29s]
+[2026-02-12T06:20:47.813+0000] {subprocess.py:93} INFO - [0m06:20:47  9 of 15 START test not_null_fct_campaign_performance_conversions ............... [RUN]
+[2026-02-12T06:20:47.827+0000] {subprocess.py:93} INFO - [0m06:20:47  10 of 15 START test not_null_fct_campaign_performance_spend .................... [RUN]
+[2026-02-12T06:20:47.829+0000] {subprocess.py:93} INFO - [0m06:20:47  11 of 15 START test not_null_int_ads_facebook_conversions ...................... [RUN]
+[2026-02-12T06:20:47.834+0000] {subprocess.py:93} INFO - [0m06:20:47  12 of 15 START test not_null_int_ads_facebook_spend ............................ [RUN]
+[2026-02-12T06:20:48.103+0000] {subprocess.py:93} INFO - [0m06:20:48  9 of 15 PASS not_null_fct_campaign_performance_conversions ..................... [[32mPASS[0m in 0.28s]
+[2026-02-12T06:20:48.123+0000] {subprocess.py:93} INFO - [0m06:20:48  13 of 15 START test not_null_int_ads_google_conversions ........................ [RUN]
+[2026-02-12T06:20:48.133+0000] {subprocess.py:93} INFO - [0m06:20:48  11 of 15 PASS not_null_int_ads_facebook_conversions ............................ [[32mPASS[0m in 0.29s]
+[2026-02-12T06:20:48.141+0000] {subprocess.py:93} INFO - [0m06:20:48  12 of 15 PASS not_null_int_ads_facebook_spend .................................. [[32mPASS[0m in 0.29s]
+[2026-02-12T06:20:48.147+0000] {subprocess.py:93} INFO - [0m06:20:48  10 of 15 PASS not_null_fct_campaign_performance_spend .......................... [[32mPASS[0m in 0.31s]
+[2026-02-12T06:20:48.169+0000] {subprocess.py:93} INFO - [0m06:20:48  14 of 15 START test not_null_int_ads_google_spend .............................. [RUN]
+[2026-02-12T06:20:48.173+0000] {subprocess.py:93} INFO - [0m06:20:48  15 of 15 START test not_null_int_crm_revenue_revenue ........................... [RUN]
+[2026-02-12T06:20:48.413+0000] {subprocess.py:93} INFO - [0m06:20:48  13 of 15 PASS not_null_int_ads_google_conversions .............................. [[32mPASS[0m in 0.28s]
+[2026-02-12T06:20:48.419+0000] {subprocess.py:93} INFO - [0m06:20:48  14 of 15 PASS not_null_int_ads_google_spend .................................... [[32mPASS[0m in 0.24s]
+[2026-02-12T06:20:48.436+0000] {subprocess.py:93} INFO - [0m06:20:48  15 of 15 PASS not_null_int_crm_revenue_revenue ................................. [[32mPASS[0m in 0.26s]
+[2026-02-12T06:20:48.593+0000] {subprocess.py:93} INFO - [0m06:20:48
+[2026-02-12T06:20:48.595+0000] {subprocess.py:93} INFO - [0m06:20:48  Finished running 15 data tests in 0 hours 0 minutes and 1.75 seconds (1.75s).
+[2026-02-12T06:20:48.771+0000] {subprocess.py:93} INFO - [0m06:20:48
+[2026-02-12T06:20:48.773+0000] {subprocess.py:93} INFO - [0m06:20:48  [32mCompleted successfully[0m
+[2026-02-12T06:20:48.774+0000] {subprocess.py:93} INFO - [0m06:20:48
+[2026-02-12T06:20:48.776+0000] {subprocess.py:93} INFO - [0m06:20:48  Done. PASS=15 WARN=0 ERROR=0 SKIP=0 NO-OP=0 TOTAL=15
+[2026-02-12T06:20:49.238+0000] {subprocess.py:97} INFO - Command exited with return code 0
+[2026-02-12T06:20:49.239+0000] {taskinstance.py:441} INFO - ::group::Post task execution logs
+[2026-02-12T06:20:49.472+0000] {taskinstance.py:1206} INFO - Marking task as SUCCESS. dag_id=marketing_warehouse_pipeline, task_id=dbt_test, run_id=manual__2026-02-12T06:14:27.629947+00:00, execution_date=20260212T061427, start_date=20260212T062040, end_date=20260212T062049
+[2026-02-12T06:20:49.538+0000] {local_task_job_runner.py:240} INFO - Task exited with return code 0
+[2026-02-12T06:20:49.650+0000] {taskinstance.py:3498} INFO - 0 downstream tasks scheduled from follow-on schedule check
+[2026-02-12T06:20:49.655+0000] {local_task_job_runner.py:222} INFO - ::endgroup::

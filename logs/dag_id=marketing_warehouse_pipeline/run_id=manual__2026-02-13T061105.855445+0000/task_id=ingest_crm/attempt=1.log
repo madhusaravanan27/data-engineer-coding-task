@@ -1,0 +1,40 @@
+[2026-02-13T06:11:09.824+0000] {local_task_job_runner.py:120} INFO - ::group::Pre task execution logs
+[2026-02-13T06:11:10.293+0000] {taskinstance.py:2076} INFO - Dependencies all met for dep_context=non-requeueable deps ti=<TaskInstance: marketing_warehouse_pipeline.ingest_crm manual__2026-02-13T06:11:05.855445+00:00 [queued]>
+[2026-02-13T06:11:10.331+0000] {taskinstance.py:2076} INFO - Dependencies all met for dep_context=requeueable deps ti=<TaskInstance: marketing_warehouse_pipeline.ingest_crm manual__2026-02-13T06:11:05.855445+00:00 [queued]>
+[2026-02-13T06:11:10.335+0000] {taskinstance.py:2306} INFO - Starting attempt 1 of 3
+[2026-02-13T06:11:10.398+0000] {taskinstance.py:2330} INFO - Executing <Task(BashOperator): ingest_crm> on 2026-02-13 06:11:05.855445+00:00
+[2026-02-13T06:11:10.426+0000] {standard_task_runner.py:90} INFO - Running: ['airflow', 'tasks', 'run', 'marketing_warehouse_pipeline', 'ingest_crm', 'manual__2026-02-13T06:11:05.855445+00:00', '--job-id', '106', '--raw', '--subdir', 'DAGS_FOLDER/marketing_warehouse_pipeline.py', '--cfg-path', '/tmp/tmp90wg0rja']
+[2026-02-13T06:11:10.436+0000] {standard_task_runner.py:91} INFO - Job 106: Subtask ingest_crm
+[2026-02-13T06:11:10.457+0000] {logging_mixin.py:188} WARNING - /home/airflow/.local/lib/python3.12/site-packages/airflow/task/task_runner/standard_task_runner.py:61 DeprecationWarning: This process (pid=2736) is multi-threaded, use of fork() may lead to deadlocks in the child.
+[2026-02-13T06:11:10.460+0000] {standard_task_runner.py:63} INFO - Started process 2739 to run task
+[2026-02-13T06:11:11.219+0000] {task_command.py:426} INFO - Running <TaskInstance: marketing_warehouse_pipeline.ingest_crm manual__2026-02-13T06:11:05.855445+00:00 [running]> on host 7fe2c4f78d9e
+[2026-02-13T06:11:12.314+0000] {taskinstance.py:2648} INFO - Exporting env vars: AIRFLOW_CTX_DAG_OWNER='data-engineering' AIRFLOW_CTX_DAG_ID='marketing_warehouse_pipeline' AIRFLOW_CTX_TASK_ID='ingest_crm' AIRFLOW_CTX_EXECUTION_DATE='2026-02-13T06:11:05.855445+00:00' AIRFLOW_CTX_TRY_NUMBER='1' AIRFLOW_CTX_DAG_RUN_ID='manual__2026-02-13T06:11:05.855445+00:00'
+[2026-02-13T06:11:12.315+0000] {taskinstance.py:430} INFO - ::endgroup::
+[2026-02-13T06:11:12.356+0000] {subprocess.py:63} INFO - Tmp dir root location: /tmp
+[2026-02-13T06:11:12.359+0000] {subprocess.py:75} INFO - Running command: ['/usr/bin/bash', '-c', 'python /opt/airflow/ingestion/load_crm.py']
+[2026-02-13T06:11:12.378+0000] {subprocess.py:86} INFO - Output:
+[2026-02-13T06:11:15.150+0000] {subprocess.py:93} INFO - Structurally bad rows: 1
+[2026-02-13T06:11:15.152+0000] {subprocess.py:93} INFO - Revenue bounds:
+[2026-02-13T06:11:15.153+0000] {subprocess.py:93} INFO - Lower: -271.0
+[2026-02-13T06:11:15.154+0000] {subprocess.py:93} INFO - Upper: 689.0
+[2026-02-13T06:11:15.155+0000] {subprocess.py:93} INFO - Outliers found: 1
+[2026-02-13T06:11:15.157+0000] {subprocess.py:93} INFO - Valid rows after DQ: 78
+[2026-02-13T06:11:15.158+0000] {subprocess.py:93} INFO - Unique order_ids after dedupe: 78
+[2026-02-13T06:11:15.159+0000] {subprocess.py:93} INFO - Parsed rows: 84
+[2026-02-13T06:11:15.160+0000] {subprocess.py:93} INFO - Rejected rows: 3
+[2026-02-13T06:11:15.161+0000] {subprocess.py:93} INFO -      order_id customer_id  ...       date        _dq_reason
+[2026-02-13T06:11:15.161+0000] {subprocess.py:93} INFO - 7   ORD-10008   CUST-6789  ... 2024-01-02  missing_required
+[2026-02-13T06:11:15.162+0000] {subprocess.py:93} INFO - 76  ORD-10076   CUST-1098  ... 2024-01-15  negative_revenue
+[2026-02-13T06:11:15.163+0000] {subprocess.py:93} INFO - 81  ORD-10081   CUST-2109  ... 2024-01-15   revenue_outlier
+[2026-02-13T06:11:15.164+0000] {subprocess.py:93} INFO - 
+[2026-02-13T06:11:15.165+0000] {subprocess.py:93} INFO - [3 rows x 10 columns]
+[2026-02-13T06:11:15.166+0000] {subprocess.py:93} INFO - Valid rows: 78
+[2026-02-13T06:11:15.166+0000] {subprocess.py:93} INFO - Valid unique order_ids: 78
+[2026-02-13T06:11:15.167+0000] {subprocess.py:93} INFO - Rows to upsert: 78
+[2026-02-13T06:11:15.168+0000] {subprocess.py:93} INFO - Unique order_ids before load: 78
+[2026-02-13T06:11:15.169+0000] {subprocess.py:93} INFO - Upserted 78 CRM rows
+[2026-02-13T06:11:15.300+0000] {subprocess.py:97} INFO - Command exited with return code 0
+[2026-02-13T06:11:15.301+0000] {taskinstance.py:441} INFO - ::group::Post task execution logs
+[2026-02-13T06:11:15.927+0000] {taskinstance.py:1206} INFO - Marking task as SUCCESS. dag_id=marketing_warehouse_pipeline, task_id=ingest_crm, run_id=manual__2026-02-13T06:11:05.855445+00:00, execution_date=20260213T061105, start_date=20260213T061110, end_date=20260213T061115
+[2026-02-13T06:11:16.145+0000] {local_task_job_runner.py:240} INFO - Task exited with return code 0
+[2026-02-13T06:11:16.439+0000] {local_task_job_runner.py:222} INFO - ::endgroup::
