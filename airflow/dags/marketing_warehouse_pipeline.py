@@ -17,17 +17,15 @@ with DAG(
     dag_id="marketing_warehouse_pipeline",
     default_args=default_args,
     start_date=datetime(2024, 1, 1),
-    schedule_interval=None,  # manual trigger
+    schedule_interval=None,  
     catchup=False,
-    max_active_runs=1,       # idempotency protection
+    max_active_runs=1,      
     tags=["marketing", "warehouse", "dbt"],
 ) as dag:
 
     start = EmptyOperator(task_id="start")
 
-    # -------------------
-    # INGESTION LAYER
-    # -------------------
+    
 
     ingest_google = BashOperator(
         task_id="ingest_google",
@@ -44,10 +42,7 @@ with DAG(
         bash_command=f"python {INGEST_DIR}/load_crm.py",
     )
 
-    # -------------------
-    # TRANSFORMATION LAYER
-    # -------------------
-
+  
     dbt_run = BashOperator(
     task_id="dbt_run",
     bash_command="""
@@ -68,8 +63,5 @@ with DAG(
 
     end = EmptyOperator(task_id="end")
 
-    # -------------------
-    # DEPENDENCIES
-    # -------------------
 
     start >> [ingest_google, ingest_facebook, ingest_crm] >> dbt_run >> dbt_test >> end
