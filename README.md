@@ -130,5 +130,3 @@ dbt test
 * Automated testing
 * Fully orchestrated workflow
 
-
-This version is clean, structured, and professional for submission.
